@@ -24,6 +24,6 @@ python3 manage.py runserver
 
 ### License
 
-MIT
+[MIT](https://opensource.org/licenses/mit-license.php)
 
 **Free Software, Hell Yeah!**
