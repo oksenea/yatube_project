@@ -21,8 +21,11 @@ def group_list(request):
 
 
 def group_posts(reqest, slug):
-    # Загружаем шаблон;
-    # шаблоны обычно хранят в отдельной директории.
-    template = f'posts/group-{slug}.html'
-    # Формируем шаблон
-    return render(request, template) 
+    template = 'group_posts.html'
+    title = f'Группа-{slug}'
+    text = 'Здесь будет информация о группах проекта Yatube'
+    context = {
+        'text': text,
+        'title': title,
+    }
+    return render(request, template, context)
