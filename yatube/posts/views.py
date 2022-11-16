@@ -8,20 +8,25 @@ def index(request):
     # Загружаем шаблон;
     # шаблоны обычно хранят в отдельной директории.
     template = 'posts/index.html'
+    title = 'Это главная страница проекта Yatube'
+    context = {
+        'title': title,
+    }
     # Формируем шаблон
-    return render(request, template)
+    return render(request, template, context)
 
 
 def group_list(request):
-    # Загружаем шаблон;
-    # шаблоны обычно хранят в отдельной директории.
     template = 'posts/group_list.html'
-    # Формируем шаблон
-    return render(request, template)
+    title = 'Группа тайных поклонников графа.'
+    context = {
+        'title': title,
+    }
+    return render(request, template, context)
 
 
-def group_posts(reqest, slug):
-    template = 'group_posts.html'
+def group_posts(request, slug):
+    template = 'posts/group_posts.html'
     title = f'Группа-{slug}'
     text = 'Здесь будет информация о группах проекта Yatube'
     context = {
