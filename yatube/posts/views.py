@@ -1,36 +1,38 @@
-from django.shortcuts import render
-from django.http import HttpResponse
 # Импортируем загрузчик.
-from django.template import loader
+# from django.http import HttpResponse
+# from django.template import loader
+from django.shortcuts import get_object_or_404, render
+
+
+# Импортируем модель, чтобы обратиться к ней
+from .models import Group, Post
 
 
 def index(request):
-    # Загружаем шаблон;
-    # шаблоны обычно хранят в отдельной директории.
-    template = 'posts/index.html'
-    title = 'Это главная страница проекта Yatube'
+    # Одна строка вместо тысячи слов на SQL:
+    # в переменную posts будет сохранена выборка из 10 объектов модели Post,
+    # отсортированных по полю pub_date по убыванию
+    posts = Post.objects.order_by('-pub_date')[:10]
+    # В словаре context отправляем информацию в шаблон
     context = {
-        'title': title,
+        'posts': posts,
     }
-    # Формируем шаблон
-    return render(request, template, context)
-
-
-def group_list(request):
-    template = 'posts/group_list.html'
-    title = 'Группа тайных поклонников графа.'
-    context = {
-        'title': title,
-    }
-    return render(request, template, context)
+    return render(request, 'posts/index.html', context)
 
 
 def group_posts(request, slug):
-    template = 'posts/group_posts.html'
-    title = f'Группа-{slug}'
-    text = 'Здесь будет информация о группах проекта Yatube'
+    # Функция get_object_or_404 получает по заданным критериям объект
+    # из базы данных или возвращает сообщение об ошибке, если объект не найден.
+    # В нашем случае в переменную group будут переданы объекты модели Group,
+    # поле slug у которых соответствует значению slug в запросе
+    group = get_object_or_404(Group, slug=slug)
+    # Метод .filter позволяет ограничить поиск по критериям.
+    # Это аналог добавления
+    # условия WHERE group_id = {group_id}
+    template = 'posts/group_list.html'
+    posts = Post.objects.filter(group=group).order_by('-pub_date')[:10]
     context = {
-        'text': text,
-        'title': title,
+        'group': group,
+        'posts': posts,
     }
     return render(request, template, context)
